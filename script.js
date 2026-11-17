@@ -1,4 +1,5 @@
-const T=[["Anxiety & Stress Management","Dealing with constant worry, racing thoughts, panic attacks or mental exhaustion? We help you understand your triggers and develop healthier ways to manage anxiety and everyday stress."],
+const T=[
+["Anxiety & Stress Management","Dealing with constant worry, racing thoughts, panic attacks or mental exhaustion? We help you understand your triggers and develop healthier ways to manage anxiety and everyday stress."],
 ["Depression & MoodSwings","Experiencing sadness, hopelessness, loss of interest or emotional exhaustion? Get compassionate support to navigate difficult emotions and gradually regain a sense of balance."],
 ["Obsessive-Compulsive Disorder (OCD)","Struggling with repetitive thoughts, unwanted urges or compulsive behaviours? Counselling can help you understand these patterns and explore effective coping strategies."],
 ["Adult ADHD","Finding it difficult to concentrate, manage time, stay organised or control impulsive behaviour? Explore practical strategies to improve daily functioning and build confidence."],
@@ -14,8 +15,40 @@ const T=[["Anxiety & Stress Management","Dealing with constant worry, racing tho
 ["Geriatric Counselling ","Providing emotional support for older adults experiencing loneliness, life transitions, adjustment difficulties or other age-related emotional challenges."],
 ["Addiction Recovery","Addiction recovery starts with the right support. Our counselling offers a safe, non-judgemental space to address challenges, build healthier coping habits and take positive steps towards a balanced, healthier life."],
 ["Middle Age Crisis","We support individuals navigating midlife challenges, emotional changes and uncertainty about life, relationships or career. Our counselling provides a safe, supportive space to rediscover purpose, build confidence and embrace life's next chapter with clarity and balance."],
-["Postpartum Counselling","Adjusting to life after childbirth can bring many emotions and challenges. Our postpartum counselling offers new mothers a warm, safe space to express their feelings, navigate stress and anxiety, and feel understood. With compassionate guidance, we help mothers build confidence and embrace this new chapter at their own pace."]];
-document.getElementById('topics').innerHTML=T.map(t=>`<div class="topic"><h3>${t[0].replace(/&/g,'&amp;')}</h3><p>${t[1]}</p></div>`).join('');
+["Postpartum Counselling","Adjusting to life after childbirth can bring many emotions and challenges. Our postpartum counselling offers new mothers a warm, safe space to express their feelings, navigate stress and anxiety, and feel understood. With compassionate guidance, we help mothers build confidence and embrace this new chapter at their own pace."]
+];
+const topicPalettes=[
+{bg:'#fdf2d7', accent:'#f6b625', border:'#f6b625', text:'#5d3a00'},
+{bg:'#ebf7f1', accent:'#4caf7a', border:'#4caf7a', text:'#163d2b'},
+{bg:'#f6e9ff', accent:'#8b5cf6', border:'#8b5cf6', text:'#3b1d62'},
+{bg:'#ffe9ea', accent:'#ef476f', border:'#ef476f', text:'#5d1b2d'},
+{bg:'#eaf4ff', accent:'#3b82f6', border:'#3b82f6', text:'#153d70'},
+{bg:'#fff0e6', accent:'#ff8a3d', border:'#ff8a3d', text:'#6c2e00'},
+{bg:'#e9f8f6', accent:'#2ab7a9', border:'#2ab7a9', text:'#114b47'},
+{bg:'#f4ecff', accent:'#9c6ade', border:'#9c6ade', text:'#382164'},
+{bg:'#fef3f2', accent:'#f97316', border:'#f97316', text:'#6d2b12'},
+{bg:'#edf8ff', accent:'#0ea5e9', border:'#0ea5e9', text:'#0d3b57'},
+{bg:'#f0fdf4', accent:'#22c55e', border:'#22c55e', text:'#114127'},
+{bg:'#fff7e6', accent:'#f59e0b', border:'#f59e0b', text:'#563d08'},
+{bg:'#f3e8ff', accent:'#a855f7', border:'#a855f7', text:'#3d1c66'},
+{bg:'#ecfeff', accent:'#14b8a6', border:'#14b8a6', text:'#0f3c3b'},
+{bg:'#fff1f2', accent:'#fb7185', border:'#fb7185', text:'#5d1521'},
+{bg:'#f0f9ff', accent:'#38bdf8', border:'#38bdf8', text:'#113b54'},
+{bg:'#f5f3ff', accent:'#8b5cf6', border:'#8b5cf6', text:'#2e1b58'}
+];
+
+document.getElementById('topics').innerHTML=T.map((t, index)=>{
+  const palette = topicPalettes[index % topicPalettes.length];
+  return `<div class="topic" data-index="${index}" style="--topic-bg:${palette.bg};--topic-accent:${palette.accent};--topic-border:${palette.border};--topic-text:${palette.text};"><h3>${t[0].replace(/&/g,'&amp;')}</h3><p>${t[1]}</p></div>`;
+}).join('');
+
+const topicCards=[...document.querySelectorAll('.topic')];
+topicCards.forEach(card=>{
+  card.addEventListener('click',()=>{
+    topicCards.forEach(item=>item.classList.remove('selected'));
+    card.classList.add('selected');
+  });
+});
 const S=[...document.querySelectorAll('.slide')],D=document.getElementById('dots');let i=0,tm;
 S.forEach((_,n)=>{const b=document.createElement('button');b.className='dot';b.setAttribute('aria-label','Go to slide '+(n+1));b.onclick=()=>go(n,true);D.appendChild(b)});
 function go(n,user){i=(n+S.length)%S.length;S.forEach((s,k)=>s.classList.toggle('on',k===i));[...D.children].forEach((d,k)=>d.setAttribute('aria-current',k===i));if(user)clearInterval(tm)}
